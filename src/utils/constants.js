@@ -1,0 +1,1 @@
+export const LOGO_URL = "https://img.freepik.com/free-vector/restaurant-tasty-food-logo-design_460848-10307.jpg";

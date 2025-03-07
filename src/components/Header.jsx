@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LOGO_URL } from '../utils/constants';
 import useOnlineStatus from '../utils/useOnlineStatus';
+import { Link } from 'react-router-dom';
 
 export default () => {
     const isOnline = useOnlineStatus();
@@ -10,10 +11,10 @@ export default () => {
             {
                 isOnline?<ol className='flex mx-4 p-8'>
                 <li className='text-xl mx-2 scale-100 list-none hover:text-[orangered] cursor-pointer'>
-                    Home
+                    <Link to='/'>Home</Link>
                 </li>
                 <li className='text-xl mx-2 scale-100 list-none hover:text-[orangered] cursor-pointer'>
-                    About
+                    <Link to='/About'>About</Link>
                 </li>
                 <li className='text-xl mx-2 scale-100 list-none hover:text-[orangered] cursor-pointer'>
                     Contact

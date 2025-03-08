@@ -6,6 +6,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Body from './components/Body';
 import About from './components/About';
 import ErrorPage from './components/ErrorPage';
+import Contact from './components/Contact';
+import Cart from './components/Cart';
+import RestaurantPage from './components/RestaurantPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -22,6 +25,18 @@ const myRouter = createBrowserRouter([
             {
                 path : "/About",
                 element : <About />
+            },
+            {
+                path : "/Contact",
+                element : <Contact />
+            },
+            {
+                path : "/Cart",
+                element : <Cart />
+            },
+            {
+                path : "/Restaurant/:ID",
+                element : <RestaurantPage />
             }
         ]
     }

@@ -16,3 +16,16 @@ export default (props) => {
         </div>
     );
 }
+
+
+export const promotedRestCard = (RestCard) => {
+    return (props) =>{
+        return(
+            <div>
+                <p className='absolute z-50 bg-red-600 m-4 mx-6 px-1 py-[2px] font-bold text-white w-32 text-sm overflow-auto flex justify-center rounded-br-md' >
+                <span className='text-yellow-300' >&#9733; </span>  People's Choice</p>
+                <RestCard {...props} />
+            </div>
+        )
+    }
+}

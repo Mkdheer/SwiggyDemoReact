@@ -8,7 +8,7 @@ let useRestaurantDetails = (ID) => {
                 try{
                     const fetchApiData = await fetch(MENU_API + ID);
                     const jsonData = await fetchApiData.json();
-                    const cardDetails = await jsonData?.data.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card?.itemCards;
+                    const cardDetails = await jsonData?.data.cards[4]?.groupedCard?.cardGroupMap?.REGULAR.cards;
                     setRestMenuCardsData(cardDetails);
                 }catch(err){
                     console.log(err);

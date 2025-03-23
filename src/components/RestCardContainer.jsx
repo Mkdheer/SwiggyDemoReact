@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import RestCard, { promotedRestCard } from "./RestCard";
 
 export default ({filterListCard}) => {
-    console.log("filterListCard", filterListCard);
     const PromotedRestData = promotedRestCard(RestCard);
     return(
         <div className="flex flex-wrap justify-center" >

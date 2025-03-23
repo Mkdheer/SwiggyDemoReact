@@ -1,21 +1,86 @@
 import { REST_MENU_IMG } from '../utils/constants';
 import { useParams } from 'react-router-dom';
+import MenuCard from './MenuCard';
+import { useState } from 'react';
 
-export default ({menuData}) => {
-    const {name,price,description,imageId} = menuData?.card?.info || {};
-    let {ID} = useParams();
-    const stars = menuData?.card?.info?.ratings?.aggregatedRating?.rating;
-    return (
-        <div className="flex justify-center mb-6 h-64">
-            <div className="flex justify-between w-[50%] scale-[100%] hover:scale-[105%] hover:cursor-pointer shadow-xs p-1 mb-1 border-b-1 border-black">
-                <div className='flex flex-col justify-center'>
-                    <h2 className='font-bold text-xl'>{name}</h2>
-                    <h3 className='font-medium'>Rs. {(price?price:0)/100}</h3>
-                    <h4 className='font-medium text-[orangeRed]'>{(stars)? stars +" Stars" : "No Rating" } </h4>
-                    <p className='font-medium' >{description}</p>
+export default ({menuData,showItem,index,setShowIndex}) => {
+
+    const [nestedShowIndex, setNestedShowIndex] = useState("");
+
+    const callAccordian = () =>{
+        setShowIndex((prevIndex) => prevIndex === index ? null : index );
+    }
+
+    const callChildAccordian = (childIndex) => {
+        setNestedShowIndex((prevIndex) => prevIndex === childIndex ? null : childIndex);
+    }
+
+    let menuCardsDisplay = () =>{
+        const type = menuData?.card?.card?.["@type"]; 
+        if(type === "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory")
+            {
+
+               return( 
+                <div>
+                    <div className="w-1/2 p-4  border-b-12 border-gray-200  px-3 m-auto flex justify-between hover:cursor-pointer" onClick={callAccordian}> 
+                        <span className='font-bold text-lg'>{menuData?.card?.card?.title} {menuData?.card?.card?.itemCards?.length}</span>
+                        <p>&#x2B07;</p>
+                    </div>
+                    <div className="w-1/2 p-4 font-bold px-3 m-auto flex flex-col justify-interMenuItemsbetween">
+                    {
+                        showItem && menuData?.card?.card?.itemCards?.map((idvItems) =>{
+                            return(
+                                (idvItems?.card?.["@type"] ==="type.googleapis.com/swiggy.presentation.food.v2.Dish")?
+                                <MenuCard key={idvItems?.card?.info?.id} menuDetails = {idvItems} /> 
+                                : "" 
+                            )
+                        })
+                    }
                 </div>
-                <img className='w-[10em] rounded-b-sm' src={ REST_MENU_IMG + imageId } />
-            </div>
-        </div>
+                </div>)
+            }
+        else if(type === "type.googleapis.com/swiggy.presentation.food.v2.NestedItemCategory")
+        {
+            const interMenuItems = menuData?.card?.card?.categories;
+            return(
+                    <div className="w-1/2 p-4 font-bold px-3 m-auto flex flex-col justify-interMenuItemsbetween" >
+                        <span className='text-lg' >{menuData?.card?.card?.title} </span>
+                        <div className='flex flex-col ml-2'>
+                            {
+                                interMenuItems.map((eachItem, childIndex)=>(
+                                    <div key={eachItem?.categoryId}>
+                                        <div>
+                                            <div className='flex justify-between p-4 border-gray-200 border-b-2 hover:cursor-pointer' onClick={()=>callChildAccordian(childIndex)}>
+                                                <span className='text-md font-semibold' >
+                                                    {eachItem?.title} ({eachItem?.itemCards?.length})
+                                                </span>
+                                                <p>&#x2B07;</p>
+                                            </div>
+                                        </div> 
+                                       <div>
+                                            {
+                                               eachItem?.itemCards?.map((idvItems)=>{
+                                                   return( (idvItems?.card?.["@type"] ==="type.googleapis.com/swiggy.presentation.food.v2.Dish")?
+                                                   (nestedShowIndex === childIndex) && <MenuCard key={idvItems?.card?.info?.id} menuDetails = {idvItems}/> 
+                                                        : ""
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                    )
+                                )
+                            }
+                        </div>
+                    </div>
+            )
+        }
+    }
+
+
+    return (
+        <>
+            {menuCardsDisplay()}
+        </>    
     )    
 }
